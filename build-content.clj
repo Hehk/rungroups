@@ -35,18 +35,19 @@
   (t-header {:class "container max-w-3xl mx-auto px-4 pt-16 sm:flex justify-between"}
             (t-h1 {:class "font-bold text-4xl mb-8 align-bottom"} "austin running")
             (t-nav {:class "flex flex-row gap-4"}
-                   (t-a {:href "/"} "home")
-                   (t-a {:href "/about"} "about")
-                   (t-a {:href "/running"} "running")
-                   (t-a {:href "/training"} "training")
-                   (t-a {:href "/contact"} "contact"))))
+                   (t-a {:href "/"} "Home")
+                   (t-a {:href "/groups"} "Groups")
+                   (t-a {:href "/events"} "Events & Races")
+                   (t-a {:href "/routes"} "Routes")
+                   (t-a {:href "/about"} "About"))))
 
-(defn layout [& content]
+(defn layout [description & content]
   (str "<!DOCTYPE html>"
        (t-html {:lang "en"}
                (t-head {}
                        (t-meta {:charset "UTF-8"})
                        (t-meta {:name "viewport" :content "width=device-width, initial-scale=1.0"})
+                       (t-meta {:name "description" :content description})
                        (t-title {} "austin running")
                        (t-link {:rel "icon" :type "image/svg+xml" :href "/favicon.svg"})
                        (t-link {:rel "stylesheet" :href "/styles.css"}))
@@ -55,7 +56,7 @@
                        (t-main {:class "container max-w-3xl mx-auto px-4 pt-8"}
                                content)))))
 
-(defn write-html-file [data file]
+(defn write-file [file data]
   (let [file (str output-dir "/" file)]
     (with-open [writer (io/writer file)]
       (.write writer data))))
@@ -66,7 +67,9 @@
 
 (fs/copy-tree "public" output-dir {:replace-existing true})
 
-(write-html-file (layout "hello world") "index.html")
-
-
+(write-file "index.html" (layout "All of the weekly running events in Austin, Texas" "Index"))
+(write-file "groups.html" (layout "All the running groups in Austin, Texas" "Groups"))
+(write-file "events.html" (layout "All the upcoming running events in Austin, Texas" "Events"))
+(write-file "routes.html" (layout "Top running routes in Austin, Texas" "Routes"))
+(write-file "about.html" (layout "About the austinrungroups.com" "About"))
 

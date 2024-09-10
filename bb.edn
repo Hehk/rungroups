@@ -1,4 +1,14 @@
 {:tasks {build-content {:doc "Build the html files"
                         :task (shell "bb build-content.clj")}
          build-styles {:doc "Build the css files"
-                       :task (shell "npx tailwindcss -i styles.css -o dist/styles.css")}}}
+                       :task (shell "npx tailwindcss -i styles.css -o dist/styles.css --minify")}
+         dev-server {:doc "Start the dev server"
+                     :task (shell "npx wrangler pages dev dist")}
+         dev-styles {:doc "Start tailwind to watch for changes"
+                     :task (shell "npx tailwindcss -i styles.css -o dist/styles.css --watch")}
+         clean {:doc "Clean the project"
+                :requires ([babashka.fs :as fs])
+                :task (doseq [item (filter (fn [s] (not (.startsWith s "#"))) (fs/read-all-lines ".gitignore"))]
+                        (fs/delete-tree item))}
+         deploy {:doc "Deploy to Cloudflare Pages"
+                 :task (shell "npx wrangler pages deploy dist --project-name austinrungroups")}}}
