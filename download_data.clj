@@ -1,12 +1,9 @@
-#!/usr/bin/env bb
-
 (require
  '[babashka.http-client :as http]
  '[babashka.fs :as fs]
  '[clojure.data.csv :as csv]
  '[clojure.java.io :as io]
- '[clojure.string :as str]
- '[cheshire.core :as json])
+ '[clojure.string :as str])
 
 (def base-url "https://docs.google.com/spreadsheets/d/1cy2U3JYRbCHj-KI-eszUZH2b5ZKNB5IJ2awiAny2Y8g/export?format=csv")
 (def meetups-sheet-id "0")
@@ -18,10 +15,6 @@
 (defn read-csv-file [file-path]
   (with-open [reader (io/reader file-path)]
     (doall (csv/read-csv reader))))
-
-(defn write-map-to-json-file [data filepath]
-  (with-open [writer (io/writer filepath)]
-    (.write writer (json/generate-string data {:pretty true}))))
 
 (defn to-id [name]
   (-> name
@@ -72,7 +65,8 @@
   (->> meetups-file
        (get-meetups)
        (group-by :day)))
-(write-map-to-json-file meetups "data/meetups.json")
+
+(spit "data/meetups.edn" (pr-str meetups))
 
 ; Generating the run-groups content
 (def run-groups-file "data/run-groups.csv")
@@ -115,6 +109,6 @@
   (->> run-groups-file
        (get-run-groups)))
 
-(write-map-to-json-file run-groups "data/run-groups.json")
+(spit "data/run_groups.edn" (pr-str run-groups))
 
 ; (spit "./dist/events.csv" (:body (http/get (url "2"))))

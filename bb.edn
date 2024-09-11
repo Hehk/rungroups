@@ -1,5 +1,5 @@
 {:tasks {build-content {:doc "Build the html files"
-                        :task (shell "bb build-content.clj")}
+                        :task (shell "bb build_content.clj")}
          build-styles {:doc "Build the css files"
                        :task (shell "npx tailwindcss -i styles.css -o dist/styles.css --minify")}
          dev-server {:doc "Start the dev server"
