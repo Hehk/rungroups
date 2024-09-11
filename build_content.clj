@@ -56,10 +56,10 @@
   (t-header {:class "container max-w-3xl mx-auto px-4 pt-16 sm:flex justify-between"}
             (styled-h1 {} "Austin running")
             (t-nav {:class "flex flex-row gap-4"}
-                   (styled-a {:href "/"} "Home")
-                   (styled-a {:href "/groups"} "Groups")
-                   (styled-a {:href "/routes"} "Routes")
-                   (styled-a {:href "/about"} "About"))))
+                   (styled-a {:href "/" :ref "prefetch"} "Home")
+                   (styled-a {:href "/groups" :ref "prefetch"} "Groups")
+                   (styled-a {:href "/routes" :ref "prefetch"} "Routes")
+                   (styled-a {:href "/about" :ref "prefetch"} "About"))))
 
 (defn layout [description & content]
   (str "<!DOCTYPE html>"
