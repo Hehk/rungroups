@@ -1,6 +1,6 @@
 # Run Groups
 
-This is the source code for the austinrungroups.com website.
+This is the source code for the [austinrungroups.com](https://austinrungroups.com) website.
 
 ## Setting up the environment
 
