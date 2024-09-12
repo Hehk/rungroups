@@ -1,4 +1,6 @@
-{:tasks {build-content {:doc "Build the html files"
+{:tasks {download-data {:doc "Download the data from the google sheets"
+                        :task (shell "bb download_data.clj")}
+         build-content {:doc "Build the html files"
                         :task (shell "bb build_content.clj")}
          build-styles {:doc "Build the css files"
                        :task (shell "npx tailwindcss -i styles.css -o dist/styles.css --minify")}
