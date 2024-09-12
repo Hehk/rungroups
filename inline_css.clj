@@ -11,12 +11,15 @@
   (with-open [reader (io/reader file)]
     (slurp reader)))
 
-(defn replace-css [css html]
-  (str/replace html #"<link rel=\"stylesheet\" href=\"/styles.css\"></link>" (str "<style>" css "</style>")))
+(defn fix-escape-chars [s]
+  ; Tailwind uses \: for modifiers, when passed throught str the \ is removed
+  ; so we need to replace it with \\\\: to make sure it is passed through
+  (str/replace s #"\:" "\\\\:"))
 
-(get-html "dist/index.html")
-(replace-css (get-html "dist/index.html") (get-css "dist/styles.css"))
-(def css (get-css "dist/styles.css"))
+(defn replace-css [a html]
+  (str/replace html #"<link rel=\"stylesheet\" href=\"/styles.css\"></link>" (str "<style>" a "</style>")))
+
+(def css (fix-escape-chars (get-css "dist/styles.css")))
 
 (defn run-replace [file css]
   (->> file
