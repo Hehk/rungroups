@@ -15,3 +15,10 @@ bb build-styles
 bb inline-css
 ```
 
+## Deploying
+
+The website it deployed to Cloudflare Pages, you need access to the `austinrungroups` project. Once you have that, you can deploy with:
+
+```bash
+bb deploy
+```
