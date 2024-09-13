@@ -9,3 +9,7 @@ html {
   @apply dark:bg-neutral-800;
   @apply dark:text-neutral-100;
 }
+
+@view-transition {
+  navigation: auto;
+}

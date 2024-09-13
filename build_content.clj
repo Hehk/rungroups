@@ -37,6 +37,7 @@
 (def t-link (make-tag "link"))
 (def t-li (make-tag "li"))
 (def t-ol (make-tag "ol"))
+(def t-script (make-tag "script"))
 (defn t-br [] "<br />")
 
 (defn styled-a [attrs & content]
