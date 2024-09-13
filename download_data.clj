@@ -111,4 +111,36 @@
 
 (spit "data/run_groups.edn" (pr-str run-groups))
 
-; (spit "./dist/events.csv" (:body (http/get (url "2"))))
+(spit "./dist/events.csv" (:body (http/get (url events-sheet-id))))
+(defn event-header [header]
+  (replace {"Name" :name
+            "Date" :date
+            "Time" :time
+            "Description" :description
+            "Location" :location
+            "Distances" :distances
+            "Host" :host
+            "Website" :website
+            "Instagram" :instagram
+            "Facebook" :facebook
+            "Twitter" :twitter} header))
+
+(defn parse-date [date]
+  (let [formats ["M/dd/yy" "M/d/yy" "M/dd/yyyy" "M/d/yyyy" "MM/dd/yy" "MM/dd/yyyy"]
+        formatters (map #(java.time.format.DateTimeFormatter/ofPattern %) formats)]
+    (some #(try
+             (java.time.LocalDate/parse date %)
+             (catch Exception _ nil))
+          formatters)))
+(defn get-events [file]
+  (let [data (read-csv-file file)
+        header (event-header (first data))
+        events (rest data)
+        now (.toLocalDate (java.time.LocalDateTime/now))]
+    (->> events
+         (map #(zipmap header %))
+         (map #(assoc % :date (parse-date (:date %))))
+         (map #(assoc % :has-happened? (.isAfter now (:date %)))))))
+
+(def events (get-events "./dist/events.csv"))
+(spit "data/events.edn" (pr-str events))
