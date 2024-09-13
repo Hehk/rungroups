@@ -205,3 +205,4 @@
                               (styled-a {:href "https://github.com/hehk/rungroups"} "repo")
                               ". The code is currently open and I will look through any pull requests, although I will not give any guarantees on a fast response time.")))
 
+(println "DONE: building content")

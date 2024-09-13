@@ -144,3 +144,5 @@
 
 (def events (get-events "./dist/events.csv"))
 (spit "data/events.edn" (pr-str events))
+
+(println "DONE: downloading data")

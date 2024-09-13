@@ -3,7 +3,7 @@
 
 ; TODO: This is a hack, using an html parser and then find all the css links and inline them
 
-(defn get-css [file]
+(defn read-file [file]
   (with-open [reader (io/reader file)]
     (slurp reader)))
 
@@ -16,10 +16,26 @@
   ; so we need to replace it with \\\\: to make sure it is passed through
   (str/replace s #"\:" "\\\\:"))
 
+(defn remove-comments [s]
+  (str/replace s #"/\*[\s\S]*?\*/" ""))
+
 (defn replace-css [a html]
   (str/replace html #"<link rel=\"stylesheet\" href=\"/styles.css\"></link>" (str "<style>" a "</style>")))
 
-(def css (fix-escape-chars (get-css "dist/styles.css")))
+(defn is-used-var? [name s]
+  (str/includes? s (str "var(" name ")")))
+(defn remove-unused-vars [s]
+  (let [vars (re-seq #"(--[^\)\:\;\s]*)" s)
+        unused-vars (filter #(not (is-used-var? (second %) s)) vars)]
+    (reduce (fn [val [_ name]]
+              (str/replace val (re-pattern (str name ":[^\\;\\}]*;?")) ""))
+            s unused-vars)))
+
+(def css (-> "dist/styles.css"
+             (read-file)
+             (remove-unused-vars)
+             (remove-comments)
+             (fix-escape-chars)))
 
 (defn run-replace [file css]
   (->> file
@@ -31,3 +47,5 @@
 (run-replace "dist/groups.html" css)
 (run-replace "dist/routes.html" css)
 (run-replace "dist/about.html" css)
+
+(println "DONE: Inlining css")
