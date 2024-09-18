@@ -111,7 +111,7 @@
 
 (spit "data/run_groups.edn" (pr-str run-groups))
 
-(spit "./dist/events.csv" (:body (http/get (url events-sheet-id))))
+(spit "./data/events.csv" (:body (http/get (url events-sheet-id))))
 (defn event-header [header]
   (replace {"Name" :name
             "Date" :date
@@ -142,7 +142,7 @@
          (map #(assoc % :date (parse-date (:date %))))
          (map #(assoc % :has-happened? (.isAfter now (:date %)))))))
 
-(def events (get-events "./dist/events.csv"))
+(def events (get-events "./data/events.csv"))
 (spit "data/events.edn" (pr-str events))
 
 (println "DONE: downloading data")

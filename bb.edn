@@ -10,7 +10,7 @@
                 :task (do (run 'build-content)
                           (run 'build-styles))}
          dev-server {:doc "Start the dev server"
-                     :task (shell "npx wrangler pages dev dist")}
+                     :task (shell "npx wrangler pages dev dist --ip 0.0.0.0")}
          dev-styles {:doc "Start tailwind to watch for changes"
                      :task (shell "npx tailwindcss -i styles.css -o dist/styles.css --watch")}
          clean {:doc "Clean the project"
