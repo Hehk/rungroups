@@ -23,6 +23,6 @@ The website it deployed to Cloudflare Pages, you need access to the `austinrungr
 bb deploy
 ```
 
-## N 1
+## N 2
 
 I don't pay for the github actions, so incrementing the number makes github reset it's 3 month timeout :P
